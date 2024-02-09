@@ -13,7 +13,6 @@ def checkRange(x1, y1, x2, y2):
 
 
 def attackAngle(c):
-    global attack_range_fixed
     if c < 21500:
         if c <= 20000:
             if c <= 19000:
@@ -39,7 +38,7 @@ def attackOrientationAngle(x1, y1, x2, y2):
     return angle
 
 
-def attackCoordinates(x1, y1, c, angle):
+def attackCoordinates(x1, y1, c, angle, send_x, send_y):
     a = c * math.sin(angle * (math.pi / 180))
     b = c * math.cos(angle * (math.pi / 180))
     # print(f"cos ang {math.cos(angle)}")
@@ -87,6 +86,12 @@ def attackCoordinates(x1, y1, c, angle):
         else:
             # print(b - abs(y1))
             y = b - abs(y1)
+
+    if send_x < 0 and x > 0:
+        x = x * -1
+    if send_y < 0 and y > 0:
+        y = y * -1
+
     return (round(x, 1), round(y, 1))
 
 
@@ -102,8 +107,18 @@ sender_x, sender_y = int(sender_x), int(sender_y)
 
 
 attack_range = checkRange(targ_x, targ_y, sender_x, sender_y)
+
+
 if attack_range != 0:
     attack_angle = attackAngle(attack_range)
+    if attack_angle == 90:
+        attack_range_fixed = 0
+    elif attack_angle == 45:
+        attack_range_fixed = 18500
+    elif attack_angle == 30:
+        attack_range_fixed = 20900
+    elif attack_angle == 15:
+        attack_range_fixed = 19600
     attack_orientation_angle = attackOrientationAngle(
         targ_x, targ_y, sender_x, sender_y
     )
@@ -111,23 +126,23 @@ if attack_range != 0:
     print(f"Attack orientation angle required: {attack_orientation_angle}")
     print(f"Optimal attack angle: {attack_angle}")
     attack_x, attack_y = attackCoordinates(
-        targ_x, targ_y, attack_range_fixed, attack_orientation_angle
+        targ_x, targ_y, attack_range_fixed, attack_orientation_angle, sender_x, sender_y
     )
     print(f"Optimal launch coordinates are: {attack_x} {attack_y} (x, y)")
     print(f"Full list: ")
     print(f"Attack angle #1: {15.0}")
     attack_x, attack_y = attackCoordinates(
-        targ_x, targ_y, 19600, attack_orientation_angle
+        targ_x, targ_y, 19600, attack_orientation_angle, sender_x, sender_y
     )
     print(f"Optimal launch coordinates are: {attack_x} {attack_y} (x, y)")
     print(f"Attack angle #2: {30.0}")
     attack_x, attack_y = attackCoordinates(
-        targ_x, targ_y, 20900, attack_orientation_angle
+        targ_x, targ_y, 20900, attack_orientation_angle, sender_x, sender_y
     )
     print(f"Optimal launch coordinates are: {attack_x} {attack_y} (x, y)")
     print(f"Attack angle #3: {45.0}")
     attack_x, attack_y = attackCoordinates(
-        targ_x, targ_y, 18500, attack_orientation_angle
+        targ_x, targ_y, 18500, attack_orientation_angle, sender_x, sender_y
     )
     print(f"Optimal launch coordinates are: {attack_x} {attack_y} (x, y)")
 
