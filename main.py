@@ -5,14 +5,6 @@ def angle_round(x, base=15):
     return base * round(x / base)
 
 
-# def check_range(x_1, y_1, x_2, y_2):
-
-#     # a = x_2 - x_1
-#     # b = y_2 - y_1
-#     # c = m.sqrt(pow(a, 2) + pow(b, 2))
-#     return c
-
-
 def attack_angle(distance):
     if distance < 17000 or distance > 21400:
         return 0, distance
@@ -31,6 +23,7 @@ def orientation_angle(x_1, y_1, x_2, y_2):
     angle = m.degrees(m.atan2(a, b))
     angle = angle_round(angle)
     return m.radians(angle)
+
 
 def orientation_angle_1(x_1, y_1, x_2, y_2):
     a = x_2 - x_1
